@@ -59,7 +59,7 @@ public class UserDAOImplTest {
      */
     @Test
     public void savesWithoutErrors() {
-        this.dao.save(new User("a.b@gmail.com", TEST_PASSWORD));
+        this.dao.save(new User("a.b@dao.com", TEST_PASSWORD));
     }
 
     /**
@@ -67,7 +67,7 @@ public class UserDAOImplTest {
      */
     @Test
     public void findsByEmail() {
-        final String email = "c.d@gmail.com";
+        final String email = "c.d@dao.com";
         this.dao.save(new User(email, TEST_PASSWORD));
         User user = this.dao.findByEmail(email);
         Assert.assertEquals(email, user.getEmail());
@@ -80,12 +80,12 @@ public class UserDAOImplTest {
     @Test
     public void findsAll() {
         Iterator<User> iter = this.dao.findAllOrderById();
-        int size = 0;
+        long prevId = -1;
         while (iter.hasNext()) {
             User user = iter.next();
-            Assert.assertEquals(Long.valueOf(++size), user.getId());
+            Assert.assertTrue(prevId < user.getId());
+            prevId = user.getId();
         }
-        Assert.assertEquals(2, size);
     }
 
     /**
@@ -93,7 +93,7 @@ public class UserDAOImplTest {
      */
     @Test(expected = PersistenceException.class)
     public void doesNotSaveDuplicates() {
-        final String email = "e.f@gmail.com";
+        final String email = "e.f@dao.com";
         this.dao.save(new User(email, TEST_PASSWORD));
         this.dao.save(new User(email, TEST_PASSWORD));
     }

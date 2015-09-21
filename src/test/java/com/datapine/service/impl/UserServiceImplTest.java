@@ -25,9 +25,12 @@ package com.datapine.service.impl;
 
 import com.datapine.domain.User;
 import com.datapine.service.UserService;
-import javax.persistence.PersistenceException;
-import junit.framework.Assert;
+import org.hamcrest.core.IsInstanceOf;
+import org.hibernate.exception.ConstraintViolationException;
+import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -48,6 +51,9 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 @TransactionConfiguration(defaultRollback = true)
 public class UserServiceImplTest {
 
+    @Rule
+    public ExpectedException expected = ExpectedException.none();
+
     @Autowired
     private UserService service;
 
@@ -60,16 +66,23 @@ public class UserServiceImplTest {
      */
     @Test
     public void registersNewUser() {
-        User user = this.service.register("a.b@gmail.com", OLD_PASSWORD);
+        User user = this.service.register("a.b@service.com", OLD_PASSWORD);
         Assert.assertNotNull(user.getId());
     }
 
     /**
      * Service cannot register new user with the existing email.
      */
-    @Test(expected = PersistenceException.class)
+    @Test
     public void doesNotRegisterIfEmailExists() {
-        this.service.register("a.b@gmail.com", OLD_PASSWORD);
+        this.expected.expectCause(
+            IsInstanceOf.<Throwable> instanceOf(
+                ConstraintViolationException.class
+            )
+        );
+        final String email = "c.d@service.com";
+        this.service.register(email, OLD_PASSWORD);
+        this.service.register(email, NEW_PASSWORD);
     }
 
     /**
@@ -77,7 +90,7 @@ public class UserServiceImplTest {
      */
     @Test
     public void updatesPassword() {
-        User user = this.service.register("c.d@gmail.com", OLD_PASSWORD);
+        User user = this.service.register("e.f@service.com", OLD_PASSWORD);
         user =
             this.service.updatePassword(
                 user.getId(),
@@ -92,7 +105,7 @@ public class UserServiceImplTest {
      */
     @Test(expected = RuntimeException.class)
     public void doesNotUpdateIfOldPasswordIsWrong() {
-        User user = this.service.register("e.f@gmail.com", OLD_PASSWORD);
+        User user = this.service.register("g.h@service.com", OLD_PASSWORD);
         user =
             this.service.updatePassword(
                 user.getId(),
