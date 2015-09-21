@@ -4,10 +4,10 @@ import com.datapine.domain.User;
 
 public interface UserService {
 
-	User register(String email, String password);
+    User register(String email, String password);
 
-	User updatePassword(Long userId, String oldPassword, String newPassword);
+    User updatePassword(Long userId, String oldPassword, String newPassword);
 
-	// add more methods here
+    // add more methods here
 
 }

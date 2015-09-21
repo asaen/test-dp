@@ -1,21 +1,20 @@
 package com.datapine.dao;
 
-import java.util.Iterator;
-
 import com.datapine.domain.User;
+import java.util.Iterator;
 
 public interface UserDAO {
 
-	void save(User user);
+    void save(User user);
 
-	User update(User user);
+    User update(User user);
 
-	void delete(User user);
+    void delete(User user);
 
-	User findById(Long id);
+    User findById(Long id);
 
-	User findByEmail(String email);
+    User findByEmail(String email);
 
-	Iterator<User> findAllOrderById();
+    Iterator<User> findAllOrderById();
 
 }
