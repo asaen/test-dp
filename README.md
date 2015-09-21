@@ -18,7 +18,7 @@ When item object is requested via `find*` methods filter out non authorized item
 
 ## TODOs
 - [x] Implement the `UserDAO` using JPA.
-- [ ] Implement the `UserService` using the `UserDAO` and transactions.
+- [x] Implement the `UserService` using the `UserDAO` and transactions.
 - [ ] Implement a RESTful `UserController` to manage users.
 - [ ] Implement a simple user login dialog to login a user. Use `HttpSession` to store the user credentials to save time, Spring Security can also be used.
 - [ ] Use Spring AOP to log all login attempts via console output or log4j.
