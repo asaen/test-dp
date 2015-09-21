@@ -43,30 +43,45 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
  * @version $Id$
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {
-    "classpath:META-INF/spring/applicationContext.xml",
-    "classpath:META-INF/spring/applicationPersistence.xml"
-    }
-)
+@ContextConfiguration(
+        locations = {
+            "classpath:META-INF/spring/applicationContext.xml",
+            "classpath:META-INF/spring/applicationPersistence.xml"
+        }
+    )
 @TransactionConfiguration(defaultRollback = true)
 public class UserServiceImplTest {
 
-    @Rule
-    public ExpectedException expected = ExpectedException.none();
-
-    @Autowired
-    private UserService service;
-
+    /**
+     * Old password.
+     */
     private static final String OLD_PASSWORD = "0lDPa$$w0Rd";
 
+    /**
+     * New password.
+     */
     private static final String NEW_PASSWORD = "N3wPa$$w0Rd";
+
+    /**
+     * Expected exception rule to catch nested exceptions.
+     */
+    @Rule
+    public final transient ExpectedException expected = ExpectedException
+        .none();
+
+    /**
+     * Service to be tested.
+     */
+    @Autowired
+    private transient UserService service;
 
     /**
      * Service can register new user.
      */
     @Test
-    public void registersNewUser() {
-        User user = this.service.register("a.b@service.com", OLD_PASSWORD);
+    public final void registersNewUser() {
+        final User user =
+            this.service.register("a.b@service.com", OLD_PASSWORD);
         Assert.assertNotNull(user.getId());
     }
 
@@ -74,9 +89,9 @@ public class UserServiceImplTest {
      * Service cannot register new user with the existing email.
      */
     @Test
-    public void doesNotRegisterIfEmailExists() {
+    public final void doesNotRegisterIfEmailExists() {
         this.expected.expectCause(
-            IsInstanceOf.<Throwable> instanceOf(
+            IsInstanceOf.<Throwable>instanceOf(
                 ConstraintViolationException.class
             )
         );
@@ -89,7 +104,7 @@ public class UserServiceImplTest {
      * Service can update password.
      */
     @Test
-    public void updatesPassword() {
+    public final void updatesPassword() {
         User user = this.service.register("e.f@service.com", OLD_PASSWORD);
         user =
             this.service.updatePassword(
@@ -104,7 +119,7 @@ public class UserServiceImplTest {
      * Service cannot update password if the old one is incorrect.
      */
     @Test(expected = RuntimeException.class)
-    public void doesNotUpdateIfOldPasswordIsWrong() {
+    public final void doesNotUpdateIfOldPasswordIsWrong() {
         User user = this.service.register("g.h@service.com", OLD_PASSWORD);
         user =
             this.service.updatePassword(

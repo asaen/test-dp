@@ -41,24 +41,40 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserServiceImpl implements UserService {
 
+    /**
+     * User DAO.
+     */
     @Autowired
-    private UserDAO dao;
+    private transient UserDAO dao;
 
-    /** {@inheritDoc} */
+    /**
+     * Registers new user.
+     * @param email The specified email.
+     * @param password The specified password.
+     * @return A new {@link User} instance.
+     */
     @Override
-    public User register(String email, String password) {
+    public final User register(final String email, final String password) {
         return this.dao.update(new User(email, password));
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Updates password. TODO fix warning.
+     *
+     * @param userid Identifier of the user.
+     * @param oldpwd The old password.
+     * @param newpwd The new password.
+     * @return The user with updated password.
+     */
     @Override
-    public User updatePassword(Long userId, String oldPassword,
-        String newPassword) {
-        User user = this.dao.findById(userId);
-        if (!StringUtils.equals(oldPassword, user.getPassword())) {
+    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
+    public final User updatePassword(final Long userid,
+        final String oldpwd, final String newpwd) {
+        final User user = this.dao.findById(userid);
+        if (!StringUtils.equals(oldpwd, user.getPassword())) {
             throw new RuntimeException();
-        };
-        user.setPassword(newPassword);
+        }
+        user.setPassword(newpwd);
         return this.dao.update(user);
     }
 

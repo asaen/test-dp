@@ -48,53 +48,73 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserDAOImpl implements UserDAO {
 
+    /**
+     * Entity Manager.
+     */
     @PersistenceContext
-    private EntityManager manager;
+    private transient EntityManager manager;
 
-    /** {@inheritDoc} */
+    /**
+     * Creates new one or updates existing user.
+     * @param user The specified user.
+     */
     @Override
-    public void save(User user) {
-        if (user.getId() == null) {
-            this.manager.persist(user);
-        } else {
-            this.manager.merge(user);
-        }
+    public final void save(final User user) {
+        this.update(user);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Creates new one or updates existing user.
+     * @param user The specified user.
+     * @return Created or updated instance.
+     */
     @Override
-    public User update(User user) {
+    public final User update(final User user) {
         return this.manager.merge(user);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Removes user from the storage.
+     * @param user The specified user.
+     */
     @Override
-    public void delete(User user) {
+    public final void delete(final User user) {
         this.manager.remove(user);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Looks for the user by id.
+     * @param identifier The specified id.
+     * @return Found user.
+     */
     @Override
-    public User findById(Long id) {
-        return this.manager.find(User.class, id);
+    public final User findById(final Long identifier) {
+        return this.manager.find(User.class, identifier);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Looks for the user by email.
+     * @param email The specified email.
+     * @return Found user.
+     */
     @Override
-    public User findByEmail(String email) {
-        CriteriaBuilder builder = this.manager.getCriteriaBuilder();
-        CriteriaQuery<User> query = builder.createQuery(User.class);
-        Root<User> root = query.from(User.class);
+    public final User findByEmail(final String email) {
+        final CriteriaBuilder builder = this.manager.getCriteriaBuilder();
+        final CriteriaQuery<User> query = builder.createQuery(User.class);
+        final Root<User> root = query.from(User.class);
         query.where(builder.equal(root.get("email"), email));
         return this.manager.createQuery(query).getResultList().get(0);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Gets an iterator for the collection of all users sorted by id.
+     * @return An iterator.
+     */
     @Override
-    public Iterator<User> findAllOrderById() {
-        CriteriaBuilder builder = this.manager.getCriteriaBuilder();
-        CriteriaQuery<User> query = builder.createQuery(User.class);
-        Root<User> root = query.from(User.class);
+    public final Iterator<User> findAllOrderById() {
+        final CriteriaBuilder builder = this.manager.getCriteriaBuilder();
+        final CriteriaQuery<User> query = builder.createQuery(User.class);
+        final Root<User> root = query.from(User.class);
         query.select(root).orderBy(builder.asc(root.get("id")));
         return this.manager.createQuery(query).getResultList().iterator();
     }

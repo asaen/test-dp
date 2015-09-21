@@ -27,7 +27,7 @@ import com.datapine.dao.UserDAO;
 import com.datapine.domain.User;
 import java.util.Iterator;
 import javax.persistence.PersistenceException;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,24 +41,31 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
  * @version $Id$
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {
-    "classpath:META-INF/spring/applicationContext.xml",
-    "classpath:META-INF/spring/applicationPersistence.xml"
-    }
-)
+@ContextConfiguration(
+        locations = {
+            "classpath:META-INF/spring/applicationContext.xml",
+            "classpath:META-INF/spring/applicationPersistence.xml"
+        }
+    )
 @TransactionConfiguration(defaultRollback = true)
 public class UserDAOImplTest {
 
-    @Autowired
-    private UserDAO dao;
-
+    /**
+     * Test password.
+     */
     private static final String TEST_PASSWORD = "test";
+
+    /**
+     * Dao to be tested.
+     */
+    @Autowired
+    private transient UserDAO dao;
 
     /**
      * DAO can save a user without any error.
      */
     @Test
-    public void savesWithoutErrors() {
+    public final void savesWithoutErrors() {
         this.dao.save(new User("a.b@dao.com", TEST_PASSWORD));
     }
 
@@ -66,10 +73,10 @@ public class UserDAOImplTest {
      * DAO can save and find a user.
      */
     @Test
-    public void findsByEmail() {
+    public final void findsByEmail() {
         final String email = "c.d@dao.com";
         this.dao.save(new User(email, TEST_PASSWORD));
-        User user = this.dao.findByEmail(email);
+        final User user = this.dao.findByEmail(email);
         Assert.assertEquals(email, user.getEmail());
         Assert.assertNotNull(user.getId());
     }
@@ -78,13 +85,13 @@ public class UserDAOImplTest {
      * DAO can find all users.
      */
     @Test
-    public void findsAll() {
-        Iterator<User> iter = this.dao.findAllOrderById();
-        long prevId = -1;
+    public final void findsAll() {
+        final Iterator<User> iter = this.dao.findAllOrderById();
+        long previd = -1;
         while (iter.hasNext()) {
-            User user = iter.next();
-            Assert.assertTrue(prevId < user.getId());
-            prevId = user.getId();
+            final User user = iter.next();
+            Assert.assertTrue(previd < user.getId());
+            previd = user.getId();
         }
     }
 
@@ -92,7 +99,7 @@ public class UserDAOImplTest {
      * DAO cannot save users with the same email.
      */
     @Test(expected = PersistenceException.class)
-    public void doesNotSaveDuplicates() {
+    public final void doesNotSaveDuplicates() {
         final String email = "e.f@dao.com";
         this.dao.save(new User(email, TEST_PASSWORD));
         this.dao.save(new User(email, TEST_PASSWORD));

@@ -21,29 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.datapine.web.controller;
 
 /**
- * User controller.
+ * Service implementation package.
  *
  * @author Alexey Saenko (alexey.saenko@gmail.com)
  * @version $Id$
  */
-public class UserController {
-
-    // public ModelAndView listUsers() {
-    // }
-
-    // public ModelAndView addUser(...) {
-    // }
-
-    // public ModelAndView showUser(...) {
-    // }
-
-    // public ModelAndView updateUser(...) {
-    // }
-
-    // public ModelAndView deleteUser(...) {
-    // }
-
-}
+package com.datapine.service.impl;
