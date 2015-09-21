@@ -17,7 +17,7 @@ When item object is requested via `find*` methods filter out non authorized item
 //item object must linked to user domain.(acl_sid table has  User.id as sid)
 
 ## TODOs
-- [ ] Implement the `UserDAO` using JPA.
+- [x] Implement the `UserDAO` using JPA.
 - [ ] Implement the `UserService` using the `UserDAO` and transactions.
 - [ ] Implement a RESTful `UserController` to manage users.
 - [ ] Implement a simple user login dialog to login a user. Use `HttpSession` to store the user credentials to save time, Spring Security can also be used.
