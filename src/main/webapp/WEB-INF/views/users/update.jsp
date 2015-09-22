@@ -11,22 +11,25 @@
 <title>Update user details</title>
 </head>
 <body>
-	<h1>Update user details</h1>
-	<c:url var="save" value="update?id=${user.id}" />
-	<form:form modelAttribute="user" method="POST" action="${save}">
-		<!-- ID -->
-		<form:label path="id">ID</form:label>
-		<form:input path="id" disabled="true" />
-		<br>
-		<!-- Email -->
-		<form:label path="email">Email</form:label>
-		<form:input path="email" />
-		<br>
-		<!-- Password -->
-		<form:label path="password">Password</form:label>
-		<form:password path="password" />
-		<br>
-		<input type="submit" value="Save" />
-	</form:form>
+    <jsp:include page="../aside.jsp" />
+    <div id="content">
+    	<h1>Update user details</h1>
+    	<c:url var="save" value="update?id=${user.id}" />
+    	<form:form modelAttribute="user" method="POST" action="${save}">
+    		<!-- ID -->
+    		<form:label path="id">ID</form:label>
+    		<form:input path="id" disabled="true" />
+    		<br>
+    		<!-- Email -->
+    		<form:label path="email">Email</form:label>
+    		<form:input path="email" />
+    		<br>
+    		<!-- Password -->
+    		<form:label path="password">Password</form:label>
+    		<form:password path="password" />
+    		<br>
+    		<input type="submit" value="Save" />
+    	</form:form>
+    </div>
 </body>
 </html>

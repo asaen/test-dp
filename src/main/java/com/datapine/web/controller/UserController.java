@@ -128,7 +128,8 @@ public class UserController {
         @ModelAttribute("user") final User user,
         @RequestParam(value = "id", required = true) final Long uid
     ) {
-        return this.showUser(this.service.update(user).getId());
+        this.service.update(user);
+        return this.listUsers();
     }
 
     /**

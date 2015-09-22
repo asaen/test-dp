@@ -9,22 +9,25 @@
 <title>User details</title>
 </head>
 <body>
-	<h1>User details</h1>
-	<table class="simpletablestyle">
-		<thead>
-			<tr>
-				<th width="50">ID</th>
-				<th width="300">Email</th>
-				<th width="200">Password</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td><c:out value="${user.id}" /></td>
-				<td><c:out value="${user.email}" /></td>
-				<td><c:out value="${user.password}" /></td>
-			</tr>
-		</tbody>
-	</table>
+    <jsp:include page="../aside.jsp" />
+    <div id="content">
+    	<h1>User details</h1>
+    	<table class="simpletablestyle">
+    		<thead>
+    			<tr>
+    				<th width="50">ID</th>
+    				<th width="300">Email</th>
+    				<th width="200">Password</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			<tr>
+    				<td><c:out value="${user.id}" /></td>
+    				<td><c:out value="${user.email}" /></td>
+    				<td><c:out value="${user.password}" /></td>
+    			</tr>
+    		</tbody>
+    	</table>
+    </div>
 </body>
 </html>
