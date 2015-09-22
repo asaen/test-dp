@@ -23,6 +23,13 @@ public interface UserService {
     User user(final Long uid);
 
     /**
+     * Updates the specified user.
+     * @param user The specified user.
+     * @return A user.
+     */
+    User update(final User user);
+
+    /**
      * Removes the specified user.
      * @param user The specified user.
      */

@@ -97,6 +97,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User update(User user) {
+        return this.dao.update(user);
+    }
+
+    @Override
     public final void delete(final User user) {
         this.dao.delete(user);
     }

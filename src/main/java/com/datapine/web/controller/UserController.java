@@ -29,7 +29,9 @@ import com.jcabi.log.Logger;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -91,17 +93,32 @@ public class UserController {
     }
 
     /**
+     * Shows update form for the specified user.
+     * @param uid The specified user id.
+     * @return ModelAndView instance.
+     */
+    @RequestMapping(value = "/update", method = RequestMethod.GET)
+    public final ModelAndView updateUser(
+        @RequestParam(value = "id", required = true) final Long uid
+    ) {
+        return new ModelAndView("users/update", "user", this.service.user(uid));
+    }
+
+    /**
      * Updates the specified user.
-     * @param userid User ID.
+     * @param uid User ID.
      * @param oldpwd Old password.
      * @param newpwd New password.
      * @return ModelAndView instance.
      */
-    @RequestMapping("/update")
-    public final ModelAndView updateUser(final Long userid, final String oldpwd,
-        final String newpwd) {
-        this.service.updatePassword(userid, oldpwd, newpwd);
-        return null;
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public final ModelAndView updateUser(
+        @ModelAttribute("user") User user,
+        @RequestParam(value = "id", required = true) final Long uid
+    ) {
+        Logger.error(this, "Updating user %s", user);
+        this.service.update(user);
+        return this.showUser(user.getId());
     }
 
     /**
