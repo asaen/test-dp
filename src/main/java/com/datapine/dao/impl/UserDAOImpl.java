@@ -79,7 +79,11 @@ public class UserDAOImpl implements UserDAO {
      */
     @Override
     public final void delete(final User user) {
-        this.manager.remove(user);
+        User deletable = user;
+        if (!this.manager.contains(user)) {
+            deletable = this.manager.merge(user);
+        }
+        this.manager.remove(deletable);
     }
 
     /**

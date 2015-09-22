@@ -139,7 +139,7 @@ public class UserController {
     @RequestMapping("/delete")
     public final ModelAndView deleteUser(final User user) {
         this.service.delete(user);
-        return null;
+        return this.listUsers();
     }
 
 }
