@@ -84,6 +84,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public final List<User> users() {
         final Iterator<User> iter = this.dao.findAllOrderById();
+        // @checkstyle ConditionalRegexpMultilineCheck (1 line)
         final List<User> result = new ArrayList<User>();
         while (iter.hasNext()) {
             result.add(iter.next());
@@ -92,12 +93,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User user(final Long uid) {
+    public final User user(final Long uid) {
         return this.dao.findById(uid);
     }
 
     @Override
-    public User update(User user) {
+    public final User update(final User user) {
         return this.dao.update(user);
     }
 

@@ -46,11 +46,19 @@ import org.springframework.web.servlet.ModelAndView;
 public class UserController {
 
     /**
+     * Constant for user variable in jsp's.
+     */
+    public static final String USER_VAR = "user";
+
+    /**
      * Injected service to communicate with the business layer.
      */
     @Autowired
     private transient UserService service;
 
+    /**
+     * Initialization method to prepare some test data.
+     */
     @PostConstruct
     public final void init() {
         this.service.register("admin@dp.com", "admin");
@@ -83,13 +91,14 @@ public class UserController {
 
     /**
      * Shows the details of the user.
+     * @param uid The specified user id.
      * @return ModelAndView instance.
      */
     @RequestMapping("/show")
     public final ModelAndView showUser(
         @RequestParam(value = "id", required = true) final Long uid
     ) {
-        return new ModelAndView("users/show", "user", this.service.user(uid));
+        return new ModelAndView("users/show", USER_VAR, this.service.user(uid));
     }
 
     /**
@@ -101,19 +110,22 @@ public class UserController {
     public final ModelAndView updateUser(
         @RequestParam(value = "id", required = true) final Long uid
     ) {
-        return new ModelAndView("users/update", "user", this.service.user(uid));
+        return new ModelAndView(
+            "users/update",
+            USER_VAR,
+            this.service.user(uid)
+        );
     }
 
     /**
      * Updates the specified user.
+     * @param user The user model attribute.
      * @param uid User ID.
-     * @param oldpwd Old password.
-     * @param newpwd New password.
      * @return ModelAndView instance.
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public final ModelAndView updateUser(
-        @ModelAttribute("user") User user,
+        @ModelAttribute("user") final User user,
         @RequestParam(value = "id", required = true) final Long uid
     ) {
         Logger.error(this, "Updating user %s", user);
