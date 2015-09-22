@@ -69,7 +69,7 @@ public class UserController {
      * Shows the list of users.
      * @return ModelAndView instance.
      */
-    @RequestMapping("/")
+    @RequestMapping(method = RequestMethod.GET)
     public final ModelAndView listUsers() {
         return new ModelAndView("users/users", "users", this.service.users());
     }

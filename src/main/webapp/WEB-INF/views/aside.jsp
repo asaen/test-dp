@@ -6,10 +6,12 @@
 <body>
 	<div id="aside">
 		<h1>Menu</h1>
+        <c:set var="req" value="${pageContext.request}" />
+        <c:set var="baseUrl" value="${req.scheme}://${req.serverName}:${req.serverPort}${req.contextPath}" />
 		<ul>
-			<li><a href="../users/">Home</a></li>
-			<li><a href="../users/">List of users</a></li>
-			<li><a href="../users/add">Add user</a></li>
+			<li><a href="${baseUrl}">Home</a></li>
+			<li><a href="${baseUrl}/users">List of users</a></li>
+			<li><a href="${baseUrl}/users/add">Add user</a></li>
 		</ul>
 	</div>
 </body>

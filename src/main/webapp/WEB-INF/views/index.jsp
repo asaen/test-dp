@@ -9,10 +9,9 @@
 <title>Datapine Test Application</title>
 </head>
 <body>
-
-<h1>Welcome to your test!</h1>
-
-<a href="users/">users</a>
-
+    <jsp:include page="aside.jsp" />
+    <div id="content">
+        <h1>Welcome to your test!</h1>
+    </div>
 </body>
 </html>
