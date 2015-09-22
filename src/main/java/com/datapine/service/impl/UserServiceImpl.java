@@ -26,7 +26,9 @@ package com.datapine.service.impl;
 import com.datapine.dao.UserDAO;
 import com.datapine.domain.User;
 import com.datapine.service.UserService;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import org.h2.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,8 +82,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public final Iterator<User> users() {
-        return this.dao.findAllOrderById();
+    public final List<User> users() {
+        final Iterator<User> iter = this.dao.findAllOrderById();
+        final List<User> result = new ArrayList<User>();
+        while (iter.hasNext()) {
+            result.add(iter.next());
+        }
+        return result;
+    }
+
+    @Override
+    public User user(final Long uid) {
+        return this.dao.findById(uid);
     }
 
     @Override

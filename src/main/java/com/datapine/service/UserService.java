@@ -1,7 +1,7 @@
 package com.datapine.service;
 
 import com.datapine.domain.User;
-import java.util.Iterator;
+import java.util.List;
 
 public interface UserService {
 
@@ -13,12 +13,19 @@ public interface UserService {
      * Returns an iterator over the existing users.
      * @return An iterator.
      */
-    Iterator<User> users();
+    List<User> users();
+
+    /**
+     * Looks for a user by id.
+     * @param uid The specified user id.
+     * @return A user.
+     */
+    User user(final Long uid);
 
     /**
      * Removes the specified user.
      * @param user The specified user.
      */
-    void delete(User user);
+    void delete(final User user);
 
 }

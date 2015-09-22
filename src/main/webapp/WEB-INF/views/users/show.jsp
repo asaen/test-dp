@@ -6,33 +6,24 @@
 <head>
 <link href="<c:url value="/resources/css/screen.css" />" rel="stylesheet" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Users</title>
+<title>User details</title>
 </head>
 <body>
-	<h1>List of users</h1>
+	<h1>User details</h1>
 	<table class="simpletablestyle">
 		<thead>
 			<tr>
 				<th width="50">ID</th>
 				<th width="300">Email</th>
-				<th width="200">Actions</th>
+				<th width="200">Password</th>
 			</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${users}" var="u">
-			<c:url var="show" value="show?id=${u.id}" />
-			<c:url var="update" value="update?id=${u.id}" />
-			<c:url var="delete" value="delete?id=${u.id}" />
 			<tr>
-				<td><c:out value="${u.id}" /></td>
-				<td><c:out value="${u.email}" /></td>
-				<td>
-					<a href="${show}">Show</a>
-					<a href="${update}">Update</a>
-					<a href="${delete}">Delete</a>
-				</td>
+				<td><c:out value="${user.id}" /></td>
+				<td><c:out value="${user.email}" /></td>
+				<td><c:out value="${user.password}" /></td>
 			</tr>
-		</c:forEach>
 		</tbody>
 	</table>
 </body>

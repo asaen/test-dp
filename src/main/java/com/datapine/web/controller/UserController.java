@@ -25,9 +25,12 @@ package com.datapine.web.controller;
 
 import com.datapine.domain.User;
 import com.datapine.service.UserService;
+import com.jcabi.log.Logger;
+import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -45,6 +48,12 @@ public class UserController {
      */
     @Autowired
     private transient UserService service;
+
+    @PostConstruct
+    public final void init() {
+        this.service.register("admin@dp.com", "admin");
+        Logger.debug(this, "Init method executed.");
+    }
 
     /**
      * Shows the list of users.
@@ -75,8 +84,10 @@ public class UserController {
      * @return ModelAndView instance.
      */
     @RequestMapping("/show")
-    public final ModelAndView showUser() {
-        return null;
+    public final ModelAndView showUser(
+        @RequestParam(value = "id", required = true) final Long uid
+    ) {
+        return new ModelAndView("users/show", "user", this.service.user(uid));
     }
 
     /**
