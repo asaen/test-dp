@@ -7,8 +7,8 @@
     <c:set var="req" value="${pageContext.request}" />
     <c:set var="baseUrl" value="${req.scheme}://${req.serverName}:${req.serverPort}${req.contextPath}" />
 	<div id="aside">
-        Logged in as: 
-        ${pageContext.request.userPrincipal.name} 
+        Logged in as:
+        ${pageContext.request.userPrincipal.name}
         (<a href="${baseUrl}/j_spring_security_logout">Logout</a>)
         <h1>Menu</h1>
 		<ul>

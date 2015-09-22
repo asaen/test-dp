@@ -66,6 +66,7 @@ public class UserServiceImplTest {
      * Expected exception rule to catch nested exceptions.
      */
     @Rule
+    // @checkstyle VisibilityModifierCheck (2 lines)
     public final transient ExpectedException expected = ExpectedException
         .none();
 

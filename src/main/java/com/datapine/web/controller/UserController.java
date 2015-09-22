@@ -46,9 +46,14 @@ import org.springframework.web.servlet.ModelAndView;
 public class UserController {
 
     /**
+     * Constant to locate an update view.
+     */
+    private static final String USERS_UPDATE_VIEW = "users/update";
+
+    /**
      * Constant for user variable in jsp's.
      */
-    public static final String USER_VAR = "user";
+    private static final String USER_VAR = "user";
 
     /**
      * Injected service to communicate with the business layer.
@@ -75,15 +80,13 @@ public class UserController {
     }
 
     /**
-     * Adds a user.
-     * @param email Email.
-     * @param password Password.
+     * Redirects to the form for adding a user.
      * @return ModelAndView instance.
      */
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public final ModelAndView addUser() {
         return new ModelAndView(
-            "users/update",
+            USERS_UPDATE_VIEW,
             USER_VAR,
             new User()
         );
@@ -111,7 +114,7 @@ public class UserController {
         @RequestParam(value = "id", required = true) final Long uid
     ) {
         return new ModelAndView(
-            "users/update",
+            USERS_UPDATE_VIEW,
             USER_VAR,
             this.service.user(uid)
         );
