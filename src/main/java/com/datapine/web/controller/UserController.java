@@ -80,13 +80,13 @@ public class UserController {
      * @param password Password.
      * @return ModelAndView instance.
      */
-    @RequestMapping("/add")
-    public final ModelAndView addUser(
-        final String email,
-        final String password
-    ) {
-        this.service.register(email, password);
-        return null;
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public final ModelAndView addUser() {
+        return new ModelAndView(
+            "users/update",
+            USER_VAR,
+            new User()
+        );
     }
 
     /**
@@ -128,8 +128,7 @@ public class UserController {
         @ModelAttribute("user") final User user,
         @RequestParam(value = "id", required = true) final Long uid
     ) {
-        this.service.update(user);
-        return this.showUser(user.getId());
+        return this.showUser(this.service.update(user).getId());
     }
 
     /**
