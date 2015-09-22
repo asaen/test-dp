@@ -26,6 +26,7 @@ package com.datapine.service.impl;
 import com.datapine.dao.UserDAO;
 import com.datapine.domain.User;
 import com.datapine.service.UserService;
+import java.util.Iterator;
 import org.h2.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,6 +77,16 @@ public class UserServiceImpl implements UserService {
         }
         user.setPassword(newpwd);
         return this.dao.update(user);
+    }
+
+    @Override
+    public final Iterator<User> users() {
+        return this.dao.findAllOrderById();
+    }
+
+    @Override
+    public final void delete(final User user) {
+        this.dao.delete(user);
     }
 
 }

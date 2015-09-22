@@ -23,27 +23,85 @@
  */
 package com.datapine.web.controller;
 
+import com.datapine.domain.User;
+import com.datapine.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
 /**
  * User controller.
  *
  * @author Alexey Saenko (alexey.saenko@gmail.com)
  * @version $Id$
  */
+@Controller
+@RequestMapping("/users")
 public class UserController {
 
-    // public ModelAndView listUsers() {
-    // }
+    /**
+     * Injected service to communicate with the business layer.
+     */
+    @Autowired
+    private transient UserService service;
 
-    // public ModelAndView addUser(...) {
-    // }
+    /**
+     * Shows the list of users.
+     * @return ModelAndView instance.
+     */
+    @RequestMapping("/")
+    public final ModelAndView listUsers() {
+        return new ModelAndView("users/users", "users", this.service.users());
+    }
 
-    // public ModelAndView showUser(...) {
-    // }
+    /**
+     * Adds a user.
+     * @param email Email.
+     * @param password Password.
+     * @return ModelAndView instance.
+     */
+    @RequestMapping("/add")
+    public final ModelAndView addUser(
+        final String email,
+        final String password
+    ) {
+        this.service.register(email, password);
+        return null;
+    }
 
-    // public ModelAndView updateUser(...) {
-    // }
+    /**
+     * Shows the details of the user.
+     * @return ModelAndView instance.
+     */
+    @RequestMapping("/show")
+    public final ModelAndView showUser() {
+        return null;
+    }
 
-    // public ModelAndView deleteUser(...) {
-    // }
+    /**
+     * Updates the specified user.
+     * @param userid User ID.
+     * @param oldpwd Old password.
+     * @param newpwd New password.
+     * @return ModelAndView instance.
+     */
+    @RequestMapping("/update")
+    public final ModelAndView updateUser(final Long userid, final String oldpwd,
+        final String newpwd) {
+        this.service.updatePassword(userid, oldpwd, newpwd);
+        return null;
+    }
+
+    /**
+     * Removes the specified user.
+     * @param user The specified user.
+     * @return ModelAndView instance.
+     */
+    @RequestMapping("/delete")
+    public final ModelAndView deleteUser(final User user) {
+        this.service.delete(user);
+        return null;
+    }
 
 }

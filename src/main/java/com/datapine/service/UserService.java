@@ -1,6 +1,7 @@
 package com.datapine.service;
 
 import com.datapine.domain.User;
+import java.util.Iterator;
 
 public interface UserService {
 
@@ -8,6 +9,16 @@ public interface UserService {
 
     User updatePassword(Long userId, String oldPassword, String newPassword);
 
-    // add more methods here
+    /**
+     * Returns an iterator over the existing users.
+     * @return An iterator.
+     */
+    Iterator<User> users();
+
+    /**
+     * Removes the specified user.
+     * @param user The specified user.
+     */
+    void delete(User user);
 
 }
