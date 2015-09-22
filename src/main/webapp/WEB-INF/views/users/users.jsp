@@ -21,10 +21,12 @@
 				</tr>
 			</thead>
 			<tbody>
+                <c:set var="req" value="${pageContext.request}" />
+                <c:set var="baseUrl" value="${req.scheme}://${req.serverName}:${req.serverPort}${req.contextPath}" />
 				<c:forEach items="${users}" var="u">
-					<c:url var="show" value="show?id=${u.id}" />
-					<c:url var="update" value="update?id=${u.id}" />
-					<c:url var="delete" value="delete?id=${u.id}" />
+					<c:url var="show" value="${baseUrl}/users/show?id=${u.id}" />
+					<c:url var="update" value="${baseUrl}/users/update?id=${u.id}" />
+					<c:url var="delete" value="${baseUrl}/users/delete?id=${u.id}" />
 					<tr>
 						<td><c:out value="${u.id}" /></td>
 						<td><c:out value="${u.email}" /></td>
