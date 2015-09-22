@@ -9,31 +9,34 @@
 <title>Users</title>
 </head>
 <body>
-	<h1>List of users</h1>
-	<table class="simpletablestyle">
-		<thead>
-			<tr>
-				<th width="50">ID</th>
-				<th width="300">Email</th>
-				<th width="200">Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-		<c:forEach items="${users}" var="u">
-			<c:url var="show" value="show?id=${u.id}" />
-			<c:url var="update" value="update?id=${u.id}" />
-			<c:url var="delete" value="delete?id=${u.id}" />
-			<tr>
-				<td><c:out value="${u.id}" /></td>
-				<td><c:out value="${u.email}" /></td>
-				<td>
-					<a href="${show}">Show</a>
-					<a href="${update}">Update</a>
-					<a href="${delete}">Delete</a>
-				</td>
-			</tr>
-		</c:forEach>
-		</tbody>
-	</table>
+	<jsp:include page="../aside.jsp" />
+	<div id="content">
+		<h1>List of users</h1>
+		<table class="simpletablestyle">
+			<thead>
+				<tr>
+					<th width="50">ID</th>
+					<th width="300">Email</th>
+					<th width="200">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${users}" var="u">
+					<c:url var="show" value="show?id=${u.id}" />
+					<c:url var="update" value="update?id=${u.id}" />
+					<c:url var="delete" value="delete?id=${u.id}" />
+					<tr>
+						<td><c:out value="${u.id}" /></td>
+						<td><c:out value="${u.email}" /></td>
+						<td>
+							<a href="${show}">Show</a>
+							<a href="${update}">Update</a>
+							<a href="${delete}">Delete</a>
+						</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
 </body>
 </html>
