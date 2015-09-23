@@ -25,6 +25,11 @@ package com.datapine.service.impl;
 
 import com.datapine.dao.UserDAO;
 import com.datapine.domain.User;
+import com.jcabi.log.Logger;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -46,16 +51,48 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private transient UserDAO dao;
 
+    private final List<User> admins = Collections.unmodifiableList(
+        Arrays.asList(
+            new User("admin@dp.com", "admin"),
+            new User("admin@gmail.com", "admin")
+        )
+    );
+
+    /**
+     * Initialization method to prepare some test data.
+     */
+    @PostConstruct
+    public final void init() {
+        for (User admin : this.admins) {
+            this.dao.save(admin);
+        }
+        this.dao.save(new User("a", "a1"));
+        this.dao.save(new User("b", "b1"));
+        Logger.debug(this, "Init method executed.");
+    }
+
     @Override
     public final UserDetails loadUserByUsername(final String username) {
         UserDetails result = null;
+        final String role = this.isAdmin(username) ? "ROLE_ADMIN" : "ROLE_USER";
         final User user = this.dao.findByEmail(username);
         if (user != null) {
             result = new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-                AuthorityUtils.createAuthorityList("ROLE_USER")
+                AuthorityUtils.createAuthorityList(role)
             );
+        }
+        return result;
+    }
+
+    private final boolean isAdmin(final String username) {
+        boolean result = false;
+        for (User user : this.admins) {
+            if (user.getEmail().equalsIgnoreCase(username)) {
+                result = true;
+                break;
+            }
         }
         return result;
     }

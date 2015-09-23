@@ -25,8 +25,6 @@ package com.datapine.web.controller;
 
 import com.datapine.domain.User;
 import com.datapine.service.UserService;
-import com.jcabi.log.Logger;
-import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -60,15 +58,6 @@ public class UserController {
      */
     @Autowired
     private transient UserService service;
-
-    /**
-     * Initialization method to prepare some test data.
-     */
-    @PostConstruct
-    public final void init() {
-        this.service.register("admin@dp.com", "admin");
-        Logger.debug(this, "Init method executed.");
-    }
 
     /**
      * Shows the list of users.
