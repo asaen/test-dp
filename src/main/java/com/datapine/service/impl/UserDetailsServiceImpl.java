@@ -62,25 +62,40 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         )
     );
 
+    private final transient List<User> users = Collections.unmodifiableList(
+        Arrays.asList(
+            new User("aaaa@dp.com", "aaaa"),
+            new User("bbbb@dp.com", "bbbb"),
+            new User("cccc@dp.com", "cccc")
+        )
+    );
+
+    private final transient List<User> guests = Collections.unmodifiableList(
+        Arrays.asList(
+            new User("dddd@dp.com", "dddd"),
+            new User("eeee@dp.com", "eeee")
+        )
+    );
+
     /**
      * Initialization method to prepare some test data.
      */
     @PostConstruct
     public final void init() {
-        for (final User admin : this.admins) {
-            this.dao.save(admin);
-        }
-        this.dao.save(new User("a", "a1"));
-        this.dao.save(new User("b", "b1"));
+        this.registerUsers(this.admins);
+        this.registerUsers(this.users);
+        this.registerUsers(this.guests);
         Logger.debug(this, "Init method executed.");
     }
 
     @Override
     public final UserDetails loadUserByUsername(final String username) {
         UserDetails result = null;
-        String role = "ROLE_USER";
-        if (this.isAdmin(username)) {
+        String role = "ROLE_GUEST";
+        if (this.admins.contains(new User(username))) {
             role = "ROLE_ADMIN";
+        } else if (this.users.contains(new User(username))) {
+            role = "ROLE_USER";
         }
         final User user = this.dao.findByEmail(username);
         if (user != null) {
@@ -94,19 +109,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     /**
-     * Checks if the specified user name is in the admin list.
-     * @param username The specified user name.
-     * @return Either {@code true} or {@code false}.
+     * Registers new users.
+     * @param users Collection of users.
      */
-    private boolean isAdmin(final String username) {
-        boolean result = false;
-        for (final User user : this.admins) {
-            if (user.getEmail().equalsIgnoreCase(username)) {
-                result = true;
-                break;
-            }
+    private void registerUsers(Iterable<User> users) {
+        for (final User user : this.users) {
+            this.dao.save(user);
         }
-        return result;
     }
 
 }
