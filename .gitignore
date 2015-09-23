@@ -5,6 +5,7 @@ hs_err_pid*
 .classpath
 .project
 .settings/
+.springBeans
 
 # maven
 target/
