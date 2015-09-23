@@ -15,6 +15,8 @@
 			<li><a href="${baseUrl}">Home</a></li>
 			<li><a href="${baseUrl}/users">List of users</a></li>
 			<li><a href="${baseUrl}/users/add">Add user</a></li>
+			<li><a href="${baseUrl}/items">List of items</a></li>
+			<li><a href="${baseUrl}/items/add">Add item</a></li>
 		</ul>
 	</div>
 </body>

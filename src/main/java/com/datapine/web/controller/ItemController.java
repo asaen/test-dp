@@ -43,6 +43,11 @@ import org.springframework.web.servlet.ModelAndView;
 public class ItemController {
 
     /**
+     * Constant for item variable in jsp's.
+     */
+    private static final String ITEM_VAR = "item";
+
+    /**
      * Injected service to communicate with the business layer.
      */
     @Autowired
@@ -63,7 +68,7 @@ public class ItemController {
      */
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public final ModelAndView add() {
-        return null;
+        return new ModelAndView("items/add", ITEM_VAR, new Item());
     }
 
     /**
@@ -72,7 +77,7 @@ public class ItemController {
      * @return ModelAndView instance.
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public final ModelAndView add(@ModelAttribute("item") final Item item) {
+    public final ModelAndView add(@ModelAttribute(ITEM_VAR) final Item item) {
         this.service.update(item);
         return this.items();
     }
