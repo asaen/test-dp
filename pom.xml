@@ -284,9 +284,11 @@
                         <exclude>checkstyle:/src/main/webapp/resources/css/.*</exclude>
                         <exclude>checkstyle:/src/main/java/com/datapine/dao/UserDAO.java</exclude>
                         <exclude>checkstyle:/src/main/java/com/datapine/domain/User.java</exclude>
+                        <exclude>checkstyle:/src/main/java/com/datapine/domain/Item.java</exclude>
                         <exclude>checkstyle:/src/main/java/com/datapine/service/UserService.java</exclude>
                         <exclude>checkstyle:/src/main/java/com/datapine/web/controller/HomeController.java</exclude>
                         <exclude>pmd:/src/main/java/com/datapine/domain/User.java</exclude>
+                        <exclude>pmd:/src/main/java/com/datapine/domain/Item.java</exclude>
                     </excludes>
                 </configuration>
                 <executions>
