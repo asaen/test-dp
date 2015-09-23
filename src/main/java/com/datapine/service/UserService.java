@@ -10,8 +10,8 @@ public interface UserService {
     User updatePassword(Long userId, String oldPassword, String newPassword);
 
     /**
-     * Returns an iterator over the existing users.
-     * @return An iterator.
+     * Returns a list of the existing users.
+     * @return A list.
      */
     List<User> users();
 
@@ -20,19 +20,19 @@ public interface UserService {
      * @param uid The specified user id.
      * @return A user.
      */
-    User user(final Long uid);
+    User user(Long uid);
 
     /**
      * Updates the specified user.
      * @param user The specified user.
      * @return A user.
      */
-    User update(final User user);
+    User update(User user);
 
     /**
      * Removes the specified user.
      * @param user The specified user.
      */
-    void delete(final User user);
+    void delete(User user);
 
 }
