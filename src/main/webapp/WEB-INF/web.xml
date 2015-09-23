@@ -11,6 +11,7 @@
             classpath:/META-INF/spring/applicationPersistence.xml
             classpath:/META-INF/spring/applicationContext.xml
             classpath:/META-INF/spring/applicationSecurity.xml
+            classpath:/META-INF/spring/aclContext.xml
         </param-value>
     </context-param>
     <listener>
