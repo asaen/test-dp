@@ -65,7 +65,7 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
     @Override
-    public final Item findById(final long iid) {
+    public final Item findById(final Long iid) {
         return this.manager.find(Item.class, iid);
     }
 

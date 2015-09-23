@@ -21,43 +21,50 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.datapine.dao;
+package com.datapine.service.impl;
 
+import com.datapine.dao.ItemDAO;
 import com.datapine.domain.Item;
+import com.datapine.service.ItemService;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Storage related operations on {@link Item}'s.
+ * Implementation for the {@link ItemService}.
  *
  * @author Alexey Saenko (alexey.saenko@gmail.com)
  * @version $Id$
  */
-public interface ItemDAO {
+@Service
+@Transactional
+public class ItemServiceImpl implements ItemService {
 
     /**
-     * Saves an item.
-     * @param item The specified item.
-     * @return Saved item instance.
+     * Item DAO.
      */
-    Item save(Item item);
+    @Autowired
+    private transient ItemDAO dao;
 
-    /**
-     * Deletes an item.
-     * @param item The specified item.
-     */
-    void delete(Item item);
+    @Override
+    public final List<Item> items() {
+        return this.dao.findAllOrderById();
+    }
 
-    /**
-     * Finds an item by the id.
-     * @param iid The specified item id.
-     * @return Found item.
-     */
-    Item findById(Long iid);
+    @Override
+    public final Item item(final Long iid) {
+        return this.dao.findById(iid);
+    }
 
-    /**
-     * Returns all items ordered by id.
-     * @return List of items.
-     */
-    List<Item> findAllOrderById();
+    @Override
+    public final Item update(final Item item) {
+        return this.dao.save(item);
+    }
+
+    @Override
+    public final void delete(final Item item) {
+        this.dao.delete(item);
+    }
 
 }

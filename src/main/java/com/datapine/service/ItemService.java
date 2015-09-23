@@ -21,43 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.datapine.dao;
+package com.datapine.service;
 
 import com.datapine.domain.Item;
 import java.util.List;
 
 /**
- * Storage related operations on {@link Item}'s.
+ * Business service to operate with {@link Item}'s.
  *
  * @author Alexey Saenko (alexey.saenko@gmail.com)
  * @version $Id$
  */
-public interface ItemDAO {
+public interface ItemService {
 
     /**
-     * Saves an item.
-     * @param item The specified item.
-     * @return Saved item instance.
+     * Returns a list of the existing users.
+     * @return A list.
      */
-    Item save(Item item);
+    List<Item> items();
 
     /**
-     * Deletes an item.
+     * Looks for an item by id.
+     * @param iid The specified item id.
+     * @return An item.
+     */
+    Item item(Long iid);
+
+    /**
+     * Updates the specified item.
+     * @param item The specified item.
+     * @return An item.
+     */
+    Item update(Item item);
+
+    /**
+     * Deletes the specified item.
      * @param item The specified item.
      */
     void delete(Item item);
-
-    /**
-     * Finds an item by the id.
-     * @param iid The specified item id.
-     * @return Found item.
-     */
-    Item findById(Long iid);
-
-    /**
-     * Returns all items ordered by id.
-     * @return List of items.
-     */
-    List<Item> findAllOrderById();
 
 }
