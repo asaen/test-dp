@@ -24,9 +24,16 @@
 package com.datapine.dao.impl;
 
 import com.datapine.dao.AclDAO;
-import com.datapine.domain.acl.AclEntry;
+import com.datapine.domain.Item;
+import com.datapine.domain.acl.AclClass;
+import com.datapine.domain.acl.AclObjectIdentity;
+import com.jcabi.log.Logger;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,14 +48,57 @@ import org.springframework.transaction.annotation.Transactional;
 public class AclDAOImpl implements AclDAO {
 
     /**
+     * Field name.
+     */
+    private static final String CLAZZ = "clazz";
+
+    /**
      * Entity Manager.
      */
     @PersistenceContext
     private transient EntityManager manager;
 
     @Override
-    public final AclEntry saveEntry(final AclEntry entry) {
-        return this.manager.merge(entry);
+    public final <T> T save(final T obj) {
+        return this.manager.merge(obj);
+    }
+
+    @Override
+    public final AclClass findClassByClassname(final String classname) {
+        final CriteriaBuilder builder = this.manager.getCriteriaBuilder();
+        final CriteriaQuery<AclClass> query =
+            builder.createQuery(AclClass.class);
+        final Root<AclClass> root = query.from(AclClass.class);
+        query.where(builder.equal(root.get(CLAZZ), classname));
+        return this.manager.createQuery(query).getResultList().get(0);
+    }
+
+    @Override
+    public final AclObjectIdentity findByItem(final Item item) {
+        AclObjectIdentity result = null;
+        final CriteriaBuilder builder = this.manager.getCriteriaBuilder();
+        final CriteriaQuery<AclObjectIdentity> query =
+            builder.createQuery(AclObjectIdentity.class);
+        final Root<AclObjectIdentity> root =
+            query.from(AclObjectIdentity.class);
+        query.where(
+            builder.and(
+                builder.equal(
+                    root.get("aclClass").get(CLAZZ),
+                    item.getClass().getCanonicalName()
+                ),
+                builder.equal(
+                    root.get("objectId"),
+                    item.getId()
+                )
+            )
+        );
+        try {
+            result = this.manager.createQuery(query).getSingleResult();
+        } catch (final NoResultException ex) {
+            Logger.trace(this, "No results found");
+        }
+        return result;
     }
 
 }

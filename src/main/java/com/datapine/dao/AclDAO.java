@@ -23,7 +23,9 @@
  */
 package com.datapine.dao;
 
-import com.datapine.domain.acl.AclEntry;
+import com.datapine.domain.Item;
+import com.datapine.domain.acl.AclClass;
+import com.datapine.domain.acl.AclObjectIdentity;
 
 /**
  * DAO for all acl entities.
@@ -33,10 +35,25 @@ import com.datapine.domain.acl.AclEntry;
 public interface AclDAO {
 
     /**
-     * Saves acl entry.
-     * @param entry Acl entry.
-     * @return Saved entry.
+     * Saves acl entity.
+     * @param obj Acl entity.
+     * @return Saved entity.
+     * @param <T> Entity type.
      */
-    AclEntry saveEntry(AclEntry entry);
+    <T> T save(T obj);
+
+    /**
+     * Finds acl class by class name.
+     * @param classname The class name.
+     * @return Acl class.
+     */
+    AclClass findClassByClassname(String classname);
+
+    /**
+     * Finds acl object identity by item.
+     * @param item The item/
+     * @return Acl object identity.
+     */
+    AclObjectIdentity findByItem(Item item);
 
 }

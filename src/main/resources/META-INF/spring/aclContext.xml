@@ -32,14 +32,14 @@
         <constructor-arg ref="lookupStrategy"/>
         <constructor-arg ref="aclCache"/>
     </bean>
-    
+
     <bean id="lookupStrategy" class="org.springframework.security.acls.jdbc.BasicLookupStrategy">
         <constructor-arg ref="dataSource"/>
         <constructor-arg ref="aclCache"/>
         <constructor-arg ref="aclAuthorizationStrategy"/>
         <constructor-arg ref="auditLogger"/>
     </bean>
-    
+
     <bean id="aclCache" class="org.springframework.security.acls.domain.EhCacheBasedAclCache">
         <constructor-arg>
             <bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
@@ -50,7 +50,7 @@
             </bean>
         </constructor-arg>
     </bean>
-    
+
     <bean id="aclAuthorizationStrategy" class="org.springframework.security.acls.domain.AclAuthorizationStrategyImpl">
         <constructor-arg>
             <list>
@@ -66,7 +66,7 @@
             </list>
         </constructor-arg>
     </bean>
-    
+
     <bean id="auditLogger" class="org.springframework.security.acls.domain.ConsoleAuditLogger"/>
 
 </beans>

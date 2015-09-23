@@ -25,10 +25,15 @@ package com.datapine.service.impl;
 
 import com.datapine.domain.Item;
 import com.datapine.service.ItemService;
+import java.util.Collections;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -53,6 +58,20 @@ public class ItemServiceImplTest {
      */
     @Autowired
     private transient ItemService service;
+
+    /**
+     * Before tests.
+     */
+    @Before
+    public final void before() {
+        SecurityContextHolder.getContext().setAuthentication(
+            new AnonymousAuthenticationToken(
+                "key",
+                "test user",
+                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"))
+            )
+        );
+    }
 
     /**
      * Service can save item.

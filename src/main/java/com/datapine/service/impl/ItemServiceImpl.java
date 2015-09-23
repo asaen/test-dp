@@ -23,11 +23,16 @@
  */
 package com.datapine.service.impl;
 
+import com.datapine.dao.AclDAO;
 import com.datapine.dao.ItemDAO;
 import com.datapine.domain.Item;
+import com.datapine.domain.acl.AclClass;
+import com.datapine.domain.acl.AclObjectIdentity;
+import com.datapine.domain.acl.AclSid;
 import com.datapine.service.ItemService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +52,12 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private transient ItemDAO dao;
 
+    /**
+     * Acl DAO.
+     */
+    @Autowired
+    private transient AclDAO acldao;
+
     @Override
     public final List<Item> items() {
         return this.dao.findAllOrderById();
@@ -59,7 +70,21 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public final Item update(final Item item) {
-        return this.dao.save(item);
+        final Item merged = this.dao.save(item);
+        if (this.acldao.findByItem(merged) == null) {
+            final AclClass clazz =
+                this.acldao.findClassByClassname(Item.class.getCanonicalName());
+            final AclSid sid = new AclSid(
+                    SecurityContextHolder.getContext().getAuthentication()
+                        .getName(),
+                    true
+                );
+            final AclObjectIdentity ident = new AclObjectIdentity();
+            ident.setAclClass(clazz);
+            ident.setObjectId(merged.getId());
+            ident.setAclSid(sid);
+        }
+        return merged;
     }
 
     @Override

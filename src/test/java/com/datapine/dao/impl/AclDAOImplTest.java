@@ -77,11 +77,38 @@ public class AclDAOImplTest {
         entry.setMask(
             BasePermission.WRITE.getMask() | BasePermission.READ.getMask()
         );
-        final AclEntry found = this.dao.saveEntry(entry);
+        final AclEntry found = this.dao.save(entry);
         Assert.assertNotNull(found.getId());
         Assert.assertNotNull(found.getAclObject().getId());
         Assert.assertNotNull(found.getAclSid().getId());
         Assert.assertNotNull(found.getAclObject().getAclClass().getId());
+    }
+
+    /**
+     * DAO can find acl object identity related to the specified item.
+     */
+    @Test
+    public final void findsAclObjectIdentityByItem() {
+        final AclClass clazz = new AclClass(Item.class.getCanonicalName());
+        final AclSid sid = new AclSid("aa@dp.com", true);
+        final AclObjectIdentity ident = new AclObjectIdentity();
+        ident.setAclClass(clazz);
+        final Long obj = 10L;
+        ident.setObjectId(obj);
+        ident.setAclSid(sid);
+        this.dao.save(ident);
+        final Item item = new Item();
+        item.setId(obj);
+        final AclObjectIdentity found = this.dao.findByItem(item);
+        Assert.assertNotNull(found);
+    }
+
+    /**
+     * DAO cannot find acl object identity.
+     */
+    @Test
+    public final void doesNotFindAclObjectIdentityByItem() {
+        Assert.assertNull(this.dao.findByItem(new Item()));
     }
 
 }
