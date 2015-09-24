@@ -4,12 +4,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
     <security:global-method-security pre-post-annotations="enabled">
-        <security:expression-handler ref="expressionHandler" />
+        <security:expression-handler ref="expressionHandler"/>
     </security:global-method-security>
 
-    <bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
+    <bean id="expressionHandler"
+         class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
         <property name="permissionEvaluator" ref="permissionEvaluator"/>
-        <property name = "roleHierarchy" ref="roleHierarchy"/>
+        <property name="roleHierarchy" ref="roleHierarchy"/>
     </bean>
 
     <bean id="roleHierarchy"
@@ -27,20 +28,23 @@
         <constructor-arg ref="aclService"/>
     </bean>
 
-    <bean id="aclService" class="org.springframework.security.acls.jdbc.JdbcMutableAclService">
+    <bean id="aclService"
+         class="org.springframework.security.acls.jdbc.JdbcMutableAclService">
         <constructor-arg ref="dataSource"/>
         <constructor-arg ref="lookupStrategy"/>
         <constructor-arg ref="aclCache"/>
     </bean>
 
-    <bean id="lookupStrategy" class="org.springframework.security.acls.jdbc.BasicLookupStrategy">
+    <bean id="lookupStrategy"
+         class="org.springframework.security.acls.jdbc.BasicLookupStrategy">
         <constructor-arg ref="dataSource"/>
         <constructor-arg ref="aclCache"/>
         <constructor-arg ref="aclAuthorizationStrategy"/>
         <constructor-arg ref="auditLogger"/>
     </bean>
 
-    <bean id="aclCache" class="org.springframework.security.acls.domain.EhCacheBasedAclCache">
+    <bean id="aclCache"
+         class="org.springframework.security.acls.domain.EhCacheBasedAclCache">
         <constructor-arg>
             <bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
                 <property name="cacheManager">
@@ -51,7 +55,8 @@
         </constructor-arg>
     </bean>
 
-    <bean id="aclAuthorizationStrategy" class="org.springframework.security.acls.domain.AclAuthorizationStrategyImpl">
+    <bean id="aclAuthorizationStrategy"
+         class="org.springframework.security.acls.domain.AclAuthorizationStrategyImpl">
         <constructor-arg>
             <list>
                 <bean class="org.springframework.security.core.authority.GrantedAuthorityImpl">
@@ -67,6 +72,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="auditLogger" class="org.springframework.security.acls.domain.ConsoleAuditLogger"/>
+    <bean id="auditLogger"
+         class="org.springframework.security.acls.domain.ConsoleAuditLogger"/>
 
 </beans>

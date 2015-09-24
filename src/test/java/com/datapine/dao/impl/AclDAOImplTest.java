@@ -114,6 +114,9 @@ public class AclDAOImplTest {
         Assert.assertNull(this.dao.findByItem(item));
     }
 
+    /**
+     * DAO can find acl sid.
+     */
     @Test
     public final void findAclSid() {
         final String sid = "aaa";

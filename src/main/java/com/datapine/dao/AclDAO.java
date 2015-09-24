@@ -50,6 +50,11 @@ public interface AclDAO {
      */
     AclClass findClass(String classname);
 
+    /**
+     * Finds acl sid by user name or role.
+     * @param sid The sid.
+     * @return Acl sid.
+     */
     AclSid findSid(String sid);
 
     /**

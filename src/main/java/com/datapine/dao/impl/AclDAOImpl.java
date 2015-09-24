@@ -79,6 +79,13 @@ public class AclDAOImpl implements AclDAO {
         return this.findByExample(obj, AclObjectIdentity.class);
     }
 
+    /**
+     * Finds an entity by example.
+     * @param obj Example.
+     * @param clazz Class.
+     * @param <T> Entity type.
+     * @return Found entity.
+     */
     @SuppressWarnings("unchecked")
     private <T> T findByExample(final T obj, final Class<T> clazz) {
         final Session session = (Session) this.manager.getDelegate();

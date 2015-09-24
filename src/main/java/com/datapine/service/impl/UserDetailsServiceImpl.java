@@ -24,7 +24,6 @@
 package com.datapine.service.impl;
 
 import com.datapine.dao.AclDAO;
-import com.datapine.dao.ItemDAO;
 import com.datapine.dao.UserDAO;
 import com.datapine.domain.Item;
 import com.datapine.domain.User;
@@ -55,14 +54,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private transient UserDAO userdao;
 
-    @Autowired
-    private transient ItemDAO itemdao;
-
+    /**
+     * DAO to access Acl entities.
+     */
     @Autowired
     private transient AclDAO acldao;
 
     /**
-     * Unmodifiable list of admin users.
+     * Unmodifiable list of admins.
      */
     private final transient List<User> admins = Collections.unmodifiableList(
         Arrays.asList(
@@ -71,6 +70,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         )
     );
 
+    /**
+     * Unmodifiable list of users.
+     */
     private final transient List<User> users = Collections.unmodifiableList(
         Arrays.asList(
             new User("aa@dp.com", "aa"),
@@ -79,6 +81,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         )
     );
 
+    /**
+     * Unmodifiable list of guests.
+     */
     private final transient List<User> guests = Collections.unmodifiableList(
         Arrays.asList(
             new User("guest@dp.com", "guest")
@@ -121,7 +126,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * Registers new users.
      * @param usrs Collection of users.
      */
-    private void registerUsers(Iterable<User> usrs) {
+    private void registerUsers(final Iterable<User> usrs) {
         for (final User user : usrs) {
             this.userdao.save(user);
         }
