@@ -31,6 +31,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,11 +66,13 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
     @Override
+    @PostFilter("hasPermission(returnObject, 'read')")
     public final Item findById(final Long iid) {
         return this.manager.find(Item.class, iid);
     }
 
     @Override
+    @PostFilter("hasPermission(filterObject, 'read')")
     public final List<Item> findAllOrderById() {
         final CriteriaBuilder builder = this.manager.getCriteriaBuilder();
         final CriteriaQuery<Item> query = builder.createQuery(Item.class);

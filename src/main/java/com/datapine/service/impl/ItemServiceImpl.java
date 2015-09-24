@@ -89,7 +89,7 @@ public class ItemServiceImpl implements ItemService {
             final AclEntry entry = new AclEntry();
             entry.setAclObject(ident);
             entry.setAclSid(sid);
-            entry.setMask(BasePermission.ADMINISTRATION.getMask());
+            entry.setMask(BasePermission.READ.getMask());
             this.acldao.save(entry);
         }
         return merged;

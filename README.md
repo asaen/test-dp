@@ -22,4 +22,4 @@ When item object is requested via `find*` methods filter out non authorized item
 - [x] Implement a RESTful `UserController` to manage users.
 - [x] Implement a simple user login dialog to login a user. Use `HttpSession` to store the user credentials to save time, Spring Security can also be used.
 - [x] Use Spring AOP to log all login attempts via console output or log4j.
-- [ ] Implement and secure via spring security `ItemDAO` and `Item`.
+- [x] Implement and secure via spring security `ItemDAO` and `Item`.
