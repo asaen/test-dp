@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
@@ -21,6 +22,9 @@ public class User {
     private Long id;
 
     @NotEmpty
+    @Email(
+        message = "Incorrect email address. It should look like test@test.com"
+    )
     private String email;
 
     @NotEmpty
