@@ -9,6 +9,16 @@ mvn jetty:run
 
 To access it type in a browser [http://localhost:8080/datapine-test-app](http://localhost:8080/datapine-test-app).
 
+There are few roles and test users which are initialized during the start of the application:
+- ROLE_ADMIN: can see list of users, every user details, all items, add or remove items
+  * admin@dp.com / admin
+- ROLE_USER: can see list of users, see own items and add new items
+  * aa@dp.com / aa
+  * bb@dp.com / bb
+  * cc@dp.com / cc
+- ROLE_GUEST: can see the welcome page only
+  * guest@dp.com / guest
+
 ## Basic flow
 
 When a user is registered, create domain object as it is.
