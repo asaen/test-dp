@@ -23,10 +23,12 @@
     		<!-- Email -->
     		<form:label path="email">Email</form:label>
     		<form:input path="email" />
+            <form:errors path="email" />
     		<br>
     		<!-- Password -->
     		<form:label path="password">Password</form:label>
     		<form:password path="password" />
+            <form:errors path="password" />
     		<br>
     		<input type="submit" value="Save" />
     	</form:form>
