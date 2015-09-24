@@ -54,6 +54,10 @@ public class AclSid {
         super();
     }
 
+    public AclSid(String sid) {
+        this(sid, true);
+    }
+
     public AclSid(String sid, Boolean isUser) {
         super();
         this.sid = sid;

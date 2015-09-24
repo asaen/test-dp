@@ -64,7 +64,7 @@ public class AclDAOImplTest {
      */
     @Test
     public final void savesEntryWithoutErrors() {
-        final AclClass clazz = new AclClass(Item.class.getCanonicalName());
+        final AclClass clazz = new AclClass(this.getClass().getCanonicalName());
         final AclSid sid = new AclSid("dddd@dp.com", true);
         final AclObjectIdentity ident = new AclObjectIdentity();
         ident.setAclClass(clazz);
@@ -89,7 +89,7 @@ public class AclDAOImplTest {
      */
     @Test
     public final void findsAclObjectIdentityByItem() {
-        final AclClass clazz = new AclClass(Item.class.getCanonicalName());
+        final AclClass clazz = new AclClass(this.getClass().getCanonicalName());
         final AclSid sid = new AclSid("aa@dp.com", true);
         final AclObjectIdentity ident = new AclObjectIdentity();
         ident.setAclClass(clazz);
@@ -108,7 +108,18 @@ public class AclDAOImplTest {
      */
     @Test
     public final void doesNotFindAclObjectIdentityByItem() {
-        Assert.assertNull(this.dao.findByItem(new Item()));
+        final Item item = new Item();
+        final Long iid = 99L;
+        item.setId(iid);
+        Assert.assertNull(this.dao.findByItem(item));
+    }
+
+    @Test
+    public final void findAclSid() {
+        final String sid = "aaa";
+        final AclSid aclsid = new AclSid(sid);
+        this.dao.save(aclsid);
+        Assert.assertNotNull(this.dao.findSid(sid));
     }
 
 }

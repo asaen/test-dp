@@ -29,16 +29,12 @@ import com.datapine.dao.UserDAO;
 import com.datapine.domain.Item;
 import com.datapine.domain.User;
 import com.datapine.domain.acl.AclClass;
-import com.datapine.domain.acl.AclEntry;
-import com.datapine.domain.acl.AclObjectIdentity;
-import com.datapine.domain.acl.AclSid;
 import com.jcabi.log.Logger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -100,21 +96,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.registerUsers(this.users);
         this.registerUsers(this.guests);
         this.acldao.save(new AclClass(Item.class.getCanonicalName()));
-
-        final AclClass clazz = new AclClass(Item.class.getCanonicalName());
-
-        AclSid sid = new AclSid(this.admins.get(0).getEmail(), true);
-
-        AclObjectIdentity ident = new AclObjectIdentity();
-        ident.setAclClass(clazz);
-        ident.setObjectId(this.itemdao.save(new Item("Title 1")).getId());
-        ident.setAclSid(sid);
-
-        AclEntry entry = new AclEntry();
-        entry.setAclObject(ident);
-        entry.setAclSid(sid);
-        entry.setMask(BasePermission.WRITE.getMask() | BasePermission.READ.getMask());
-
         Logger.debug(this, "Init method executed.");
     }
 

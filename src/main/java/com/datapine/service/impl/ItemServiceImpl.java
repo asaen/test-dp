@@ -27,11 +27,13 @@ import com.datapine.dao.AclDAO;
 import com.datapine.dao.ItemDAO;
 import com.datapine.domain.Item;
 import com.datapine.domain.acl.AclClass;
+import com.datapine.domain.acl.AclEntry;
 import com.datapine.domain.acl.AclObjectIdentity;
 import com.datapine.domain.acl.AclSid;
 import com.datapine.service.ItemService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,16 +75,22 @@ public class ItemServiceImpl implements ItemService {
         final Item merged = this.dao.save(item);
         if (this.acldao.findByItem(merged) == null) {
             final AclClass clazz =
-                this.acldao.findClassByClassname(Item.class.getCanonicalName());
-            final AclSid sid = new AclSid(
-                    SecurityContextHolder.getContext().getAuthentication()
-                        .getName(),
-                    true
-                );
+                this.acldao.findClass(Item.class.getCanonicalName());
+            final String user = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
+            AclSid sid = this.acldao.findSid(user);
+            if (sid == null) {
+                sid = new AclSid(user);
+            }
             final AclObjectIdentity ident = new AclObjectIdentity();
             ident.setAclClass(clazz);
             ident.setObjectId(merged.getId());
             ident.setAclSid(sid);
+            final AclEntry entry = new AclEntry();
+            entry.setAclObject(ident);
+            entry.setAclSid(sid);
+            entry.setMask(BasePermission.ADMINISTRATION.getMask());
+            this.acldao.save(entry);
         }
         return merged;
     }

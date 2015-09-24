@@ -27,13 +27,12 @@ import com.datapine.dao.AclDAO;
 import com.datapine.domain.Item;
 import com.datapine.domain.acl.AclClass;
 import com.datapine.domain.acl.AclObjectIdentity;
-import com.jcabi.log.Logger;
+import com.datapine.domain.acl.AclSid;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Example;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,11 +47,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class AclDAOImpl implements AclDAO {
 
     /**
-     * Field name.
-     */
-    private static final String CLAZZ = "clazz";
-
-    /**
      * Entity Manager.
      */
     @PersistenceContext
@@ -64,41 +58,33 @@ public class AclDAOImpl implements AclDAO {
     }
 
     @Override
-    public final AclClass findClassByClassname(final String classname) {
-        final CriteriaBuilder builder = this.manager.getCriteriaBuilder();
-        final CriteriaQuery<AclClass> query =
-            builder.createQuery(AclClass.class);
-        final Root<AclClass> root = query.from(AclClass.class);
-        query.where(builder.equal(root.get(CLAZZ), classname));
-        return this.manager.createQuery(query).getResultList().get(0);
+    public final AclClass findClass(final String classname) {
+        final AclClass obj = new AclClass();
+        obj.setClazz(classname);
+        return this.findByExample(obj, AclClass.class);
+    }
+
+    @Override
+    public final AclSid findSid(final String sid) {
+        final AclSid obj = new AclSid();
+        obj.setSid(sid);
+        return this.findByExample(obj, AclSid.class);
     }
 
     @Override
     public final AclObjectIdentity findByItem(final Item item) {
-        AclObjectIdentity result = null;
-        final CriteriaBuilder builder = this.manager.getCriteriaBuilder();
-        final CriteriaQuery<AclObjectIdentity> query =
-            builder.createQuery(AclObjectIdentity.class);
-        final Root<AclObjectIdentity> root =
-            query.from(AclObjectIdentity.class);
-        query.where(
-            builder.and(
-                builder.equal(
-                    root.get("aclClass").get(CLAZZ),
-                    item.getClass().getCanonicalName()
-                ),
-                builder.equal(
-                    root.get("objectId"),
-                    item.getId()
-                )
-            )
-        );
-        try {
-            result = this.manager.createQuery(query).getSingleResult();
-        } catch (final NoResultException ex) {
-            Logger.trace(this, "No results found");
-        }
-        return result;
+        final AclObjectIdentity obj = new AclObjectIdentity();
+        obj.setAclClass(new AclClass(item.getClass().getCanonicalName()));
+        obj.setObjectId(item.getId());
+        return this.findByExample(obj, AclObjectIdentity.class);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T findByExample(final T obj, final Class<T> clazz) {
+        final Session session = (Session) this.manager.getDelegate();
+        final Example example = Example.create(obj);
+        final Criteria criteria = session.createCriteria(clazz).add(example);
+        return (T) criteria.uniqueResult();
     }
 
 }

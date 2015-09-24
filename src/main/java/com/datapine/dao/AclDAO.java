@@ -26,6 +26,7 @@ package com.datapine.dao;
 import com.datapine.domain.Item;
 import com.datapine.domain.acl.AclClass;
 import com.datapine.domain.acl.AclObjectIdentity;
+import com.datapine.domain.acl.AclSid;
 
 /**
  * DAO for all acl entities.
@@ -47,7 +48,9 @@ public interface AclDAO {
      * @param classname The class name.
      * @return Acl class.
      */
-    AclClass findClassByClassname(String classname);
+    AclClass findClass(String classname);
+
+    AclSid findSid(String sid);
 
     /**
      * Finds acl object identity by item.
