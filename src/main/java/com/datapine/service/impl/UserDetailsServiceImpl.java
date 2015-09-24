@@ -67,23 +67,21 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final transient List<User> admins = Collections.unmodifiableList(
         Arrays.asList(
             // @checkstyle MultipleStringLiteralsCheck (2 lines)
-            new User("admin@dp.com", "admin"),
-            new User("admin@gmail.com", "admin")
+            new User("admin@dp.com", "admin")
         )
     );
 
     private final transient List<User> users = Collections.unmodifiableList(
         Arrays.asList(
-            new User("aaaa@dp.com", "aaaa"),
-            new User("bbbb@dp.com", "bbbb"),
-            new User("cccc@dp.com", "cccc")
+            new User("aa@dp.com", "aa"),
+            new User("bb@dp.com", "bb"),
+            new User("cc@dp.com", "cc")
         )
     );
 
     private final transient List<User> guests = Collections.unmodifiableList(
         Arrays.asList(
-            new User("dddd@dp.com", "dddd"),
-            new User("eeee@dp.com", "eeee")
+            new User("guest@dp.com", "guest")
         )
     );
 
