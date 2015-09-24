@@ -32,6 +32,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,11 +53,13 @@ public class ItemDAOImpl implements ItemDAO {
     private transient EntityManager manager;
 
     @Override
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public final Item save(final Item item) {
         return this.manager.merge(item);
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasPermission(#item, 'write')")
     public final void delete(final Item item) {
         Item deletable = item;
         if (!this.manager.contains(item)) {
@@ -66,13 +69,13 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
     @Override
-    @PostFilter("hasPermission(returnObject, 'read')")
+    @PostFilter("hasRole('ROLE_ADMIN') or hasPermission(returnObject, 'read')")
     public final Item findById(final Long iid) {
         return this.manager.find(Item.class, iid);
     }
 
     @Override
-    @PostFilter("hasPermission(filterObject, 'read')")
+    @PostFilter("hasRole('ROLE_ADMIN') or hasPermission(filterObject, 'read')")
     public final List<Item> findAllOrderById() {
         final CriteriaBuilder builder = this.manager.getCriteriaBuilder();
         final CriteriaQuery<Item> query = builder.createQuery(Item.class);
